@@ -1,0 +1,28 @@
+version: '3'
+services:
+    pentaho-server:
+        image: pentaho-server-extrepo:latest
+        build: .
+        container_name: pentaho-server
+        restart: always
+        ports:
+            - 8080:8080
+        environment:
+            PENTAHO_REPO_JDBC_URL_HIBERNATE: 'jdbc:postgresql://${PGSQL_HOST}:${PGSQL_PORT}/hibernate'
+            PENTAHO_REPO_JDBC_URL_QUARTZ: 'jdbc:postgresql://${PGSQL_HOST}:${PGSQL_PORT}/quartz'
+            PENTAHO_REPO_JDBC_URL_JCR: 'jdbc:postgresql://${PGSQL_HOST}:${PGSQL_PORT}/jackrabbit'
+            PENTAHO_REPO_USERNAME: '${PGSQL_USER}'
+            PENTAHO_REPO_PASSWORD: '${PGSQL_PASSWORD}'
+            PENTAHO_REPO_JDBC_CLASS: 'org.postgresql.Driver'
+            PGSQL_HOST: ${PGSQL_HOST}
+            PGSQL_PORT: ${PGSQL_PORT}
+            PGSQL_USER: ${PGSQL_USER}
+            PGSQL_PASSWORD: ${PGSQL_PASSWORD}
+    pgsql_pentaho: 
+        image: postgres:9.4
+        container_name: pgsql_pentaho
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_PASSWORD: ${PGSQL_PASSWORD}

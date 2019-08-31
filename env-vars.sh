@@ -1,0 +1,15 @@
+#!/bin/bash
+declare -a arr=("PENTAHO_REPO_JDBC_URL_HIBERNATE"
+  "PENTAHO_REPO_JDBC_URL_QUARTZ"
+  "PENTAHO_REPO_JDBC_URL_JCR"
+  "PENTAHO_REPO_USERNAME"
+  "PENTAHO_REPO_PASSWORD"
+  "PENTAHO_REPO_JDBC_CLASS"
+)
+E_OPTS="";
+for key in "${arr[@]}"
+do
+  E_OPTS="$E_OPTS -D${key}=${!key}"
+done
+
+export E_OPTS=$E_OPTS

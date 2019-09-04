@@ -28,7 +28,7 @@ This will start a Pentaho Server that will try to connect to the specified Postg
 PGSQL_HOST=DB_HOST \
   PGSQL_PORT=5432 \
   PGSQL_USER=postgres \
-  PGSQL_PASSWORD=dummymummy && \
+  PGSQL_PASSWORD=dummymummy \
   docker-compose up -d pentaho-server
 ```
 
@@ -49,6 +49,6 @@ The following command will execute creation scripts on the postgres instance you
 PGSQL_HOST=DB_HOST \
   PGSQL_PORT=5432 \
   PGSQL_USER=postgres \
-  PGSQL_PASSWORD=dummymummy && \
+  PGSQL_PASSWORD=dummymummy \
   docker-compose run pentaho-server initdb
 ```

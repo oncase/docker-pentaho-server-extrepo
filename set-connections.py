@@ -110,9 +110,10 @@ if not os.path.isfile(jcrbkpfile):
 
 # XML Parsing
 jcrtree = xml.etree.ElementTree.parse(jcrbkpfile)
+root = jcrtree.getroot()
+root.find(".//Cluster").set("id", "node_${dockerpid}")
 relevantTags = []
 for tag in jcrTags.keys():
-  root = jcrtree.getroot()
   elmt = root.find("./"+tag)
   elmt.clear()
   props = merge_two_dicts(jcrTags[tag], jcrCommonTags)

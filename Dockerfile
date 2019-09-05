@@ -50,9 +50,9 @@ WORKDIR /pentaho
 USER pentaho
 
 # Downloads pentaho
-RUN wget https://pilotfiber.dl.sourceforge.net/project/pentaho/Pentaho%208.3/server/pentaho-server-ce-8.3.0.0-371.zip && \
-  unzip pentaho-server-ce-8.3.0.0-371.zip && \
-  rm -rf pentaho-server-ce-8.3.0.0-371.zip
+RUN wget -O pentaho-server.zip https://sourceforge.net/projects/pentaho/files/Pentaho%208.2/server/pentaho-server-ce-8.2.0.0-342.zip/download && \
+  unzip -qq pentaho-server.zip && \
+  rm -rf pentaho-server.zip
 
 RUN rm /pentaho/pentaho-server/promptuser.sh; \
   touch /pentaho/pentaho-server/tomcat/logs/catalina.out ; \

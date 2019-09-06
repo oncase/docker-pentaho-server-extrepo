@@ -48,11 +48,12 @@ RUN mkdir /pentaho && \
 
 WORKDIR /pentaho
 USER pentaho
+ARG PENTAHO_DOWNLOAD_URL=https://pilotfiber.dl.sourceforge.net/project/pentaho/Pentaho%208.3/server/pentaho-server-ce-8.3.0.0-371.zip
 
 # Downloads pentaho
-RUN wget -q https://pilotfiber.dl.sourceforge.net/project/pentaho/Pentaho%208.3/server/pentaho-server-ce-8.3.0.0-371.zip && \
-  unzip -qq pentaho-server-ce-8.3.0.0-371.zip && \
-  rm -rf pentaho-server-ce-8.3.0.0-371.zip
+RUN wget -q -O pentaho.zip ${PENTAHO_DOWNLOAD_URL} && \
+  unzip -qq pentaho.zip && \
+  rm -rf pentaho.zip
 
 RUN rm /pentaho/pentaho-server/promptuser.sh; \
   rm -rf /pentaho/pentaho-server/pentaho-solutions/system/default-content/*.zip ; \

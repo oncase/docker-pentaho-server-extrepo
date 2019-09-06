@@ -1,7 +1,7 @@
 version: '3'
 services:
     pentaho-server:
-        image: pentaho-server-extrepo:latest
+        image: oncase/pentaho-server-extrepo:latest
         build: .
         container_name: pentaho-server
         restart: always

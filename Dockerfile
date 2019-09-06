@@ -3,17 +3,11 @@ FROM    ubuntu:18.04
 #  - https://github.com/webdetails/cbf2/blob/master/dockerfiles
 #  - https://hub.docker.com/r/picoded/ubuntu-openjdk-8-jdk/dockerfile
 
-# Set the locale
-RUN apt-get clean && apt-get update && apt-get install -y locales && locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8 
-RUN update-locale LANG=en_US.UTF-8 LC_MESSAGES=POSIX && \
-    echo Building core imaged
-
 # Install primary dependencies
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
-	apt-get update && \
+	apt-get clean && apt-get update && \
+  apt-get install -y locales && \
+  locale-gen en_US.UTF-8 && \
   apt-get install -y software-properties-common unzip git lftp sudo zip curl wget && \
   sudo apt-get install -y postgresql-client && \
 	sudo apt install -y openjdk-8-jdk && \
@@ -25,10 +19,16 @@ RUN sed 's/main$/main universe/' -i /etc/apt/sources.list && \
 	echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
 	rm -rf /tmp/*
 
+# Set the locale
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8 
+RUN update-locale LANG=en_US.UTF-8 LC_MESSAGES=POSIX && \
+    echo Building core image
+
 # Fix certificate issues, found as of 
 # https://bugs.launchpad.net/ubuntu/+source/ca-certificates-java/+bug/983302
-RUN apt-get update && \
-	apt-get install -y ca-certificates-java && \
+RUN apt-get install -y ca-certificates-java && \
 	apt-get clean && \
 	update-ca-certificates -f && \
 	rm -rf /var/lib/apt/lists/* && \
@@ -50,11 +50,12 @@ WORKDIR /pentaho
 USER pentaho
 
 # Downloads pentaho
-RUN wget https://pilotfiber.dl.sourceforge.net/project/pentaho/Pentaho%208.3/server/pentaho-server-ce-8.3.0.0-371.zip && \
-  unzip pentaho-server-ce-8.3.0.0-371.zip && \
+RUN wget -q https://pilotfiber.dl.sourceforge.net/project/pentaho/Pentaho%208.3/server/pentaho-server-ce-8.3.0.0-371.zip && \
+  unzip -qq pentaho-server-ce-8.3.0.0-371.zip && \
   rm -rf pentaho-server-ce-8.3.0.0-371.zip
 
 RUN rm /pentaho/pentaho-server/promptuser.sh; \
+  rm -rf /pentaho/pentaho-server/pentaho-solutions/system/default-content/*.zip ; \
   touch /pentaho/pentaho-server/tomcat/logs/catalina.out ; \
   touch /pentaho/pentaho-server/tomcat/logs/pentaho.log ; \
   sed -i -e 's/\(exec ".*"\) start/\1 run/' /pentaho/pentaho-server/tomcat/bin/startup.sh; 
@@ -70,4 +71,5 @@ RUN python set-connections.py && rm set-connections.py
 # Changes start-pentaho.sh to inject env vars to jvm
 RUN sh patch-start.sh && rm patch-start.sh
 
+WORKDIR /pentaho/pentaho-server
 ENTRYPOINT ["bash", "run.sh"]

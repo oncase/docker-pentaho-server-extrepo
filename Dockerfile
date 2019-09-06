@@ -48,7 +48,7 @@ RUN mkdir /pentaho && \
 
 WORKDIR /pentaho
 USER pentaho
-ARG PENTAHO_DOWNLOAD_URL=https://sourceforge.net/projects/pentaho/files/Pentaho%208.2/server/pentaho-server-ce-8.2.0.0-342.zip/download
+ARG PENTAHO_DOWNLOAD_URL=https://pilotfiber.dl.sourceforge.net/project/pentaho/Pentaho%208.3/server/pentaho-server-ce-8.3.0.0-371.zip
 
 # Downloads pentaho
 RUN wget -q -O pentaho.zip ${PENTAHO_DOWNLOAD_URL} && \
